@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Bienvenida Simple",
+  "version": "1.0",
+  "description": "Muestra un mensaje de bienvenida",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": ["tabs"]
+}
