@@ -74,7 +74,7 @@ def cargar_contrasenas_vulneradas():
     contrasenas_vulneradas = set()
     
     # Buscar todos los archivos .txt en la carpeta rockyou
-    archivos_txt = glob.glob('rockyou/*.txt')
+    archivos_txt = glob.glob('../rockyou/*.txt')
     
     if not archivos_txt:
         print("ADVERTENCIA: No se encontraron archivos .txt en la carpeta rockyou")
