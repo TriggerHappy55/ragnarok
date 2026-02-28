@@ -6,6 +6,10 @@
   "action": {
     "default_popup": "htmls/popup.html"
   },
+  "options_ui": {
+    "page": "htmls/password-popup.html",
+    "open_in_tab": false
+  },
   "background": {
     "scripts": ["htmls/background.js"]
   },
@@ -15,6 +19,6 @@
       "js": ["htmls/content.js"]
     }
   ],
-  "permissions": ["tabs", "storage", "notifications"],
+  "permissions": ["tabs", "storage", "notifications", "webRequest"],
   "host_permissions": ["<all_urls>"]
 }
