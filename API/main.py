@@ -6,7 +6,7 @@ import json
 import base64
 import os
 import uuid
-import random
+import secrets
 import string
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
@@ -144,7 +144,7 @@ def generar_password_seguro(longitud: int, mayusculas: bool, minusculas: bool, d
     
     # Función para obtener un carácter aleatorio de un conjunto específico
     def get_random_char(char_set):
-        return random.choice(char_set)
+        return secrets.choice(char_set)
     
     # Añadir al menos un carácter de cada tipo seleccionado
     if mayusculas:
@@ -159,10 +159,10 @@ def generar_password_seguro(longitud: int, mayusculas: bool, minusculas: bool, d
     # Completar el resto de la longitud con caracteres aleatorios del conjunto completo
     caracteres_restantes = longitud - len(password)
     for _ in range(caracteres_restantes):
-        password.append(random.choice(caracteres))
+        password.append(secrets.choice(caracteres))
     
     # Mezclar la contraseña para evitar que los primeros caracteres sean siempre del mismo tipo
-    random.shuffle(password)
+    secrets.SystemRandom().shuffle(password)
     
     # Unir la lista en una cadena
     return ''.join(password)
