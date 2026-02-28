@@ -42,7 +42,6 @@ class PasswordChange(BaseModel):
     password_nueva: str
 
 class Password(BaseModel):
-    userid: int
     url: str
     email: str
     password: str
@@ -434,10 +433,6 @@ def obtener_password(id: int, session_token: Optional[str] = Cookie(None)):
 def crear_password(password: Password, session_token: Optional[str] = Cookie(None)):
     """Crear una nueva contraseña (se guarda encriptada automáticamente)"""
     sesion = verificar_sesion(session_token)
-    
-    # Asegurar que la contraseña pertenece al usuario de la sesión
-    if password.userid != sesion["uid"]:
-        raise HTTPException(status_code=403, detail="No puedes crear contraseñas para otro usuario")
     
     datos_pass = leer_json_passwords()
     
