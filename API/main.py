@@ -13,6 +13,42 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import hashlib
 import glob
+import shutil
+from pathlib import Path
+
+#Rutas relativas
+API_DIR = Path(__file__).parent
+SRC_DIR = API_DIR.parent / "src"
+
+# Rutas de los archivos JSON en src (plantillas)
+SRC_USERS_JSON = SRC_DIR / "users.json"
+SRC_PASSWORDS_JSON = SRC_DIR / "passwords.json"
+
+# Rutas de destino en api
+API_USERS_JSON = API_DIR / "users.json"
+API_PASSWORDS_JSON = API_DIR / "passwords.json"
+
+# Copiar archivos siempre (sobrescribiendo)
+def copiar_json_plantillas():
+    """Copia los JSON de ../src a ../api sobrescribiendo siempre"""
+    print("Copiando plantillas JSON (sobrescribiendo)...")
+
+    # Copiar users.json (siempre)
+    if SRC_USERS_JSON.exists():
+        shutil.copy2(SRC_USERS_JSON, API_USERS_JSON)
+        print(f"Copiado {SRC_USERS_JSON} a {API_USERS_JSON}")
+    else:
+        print(f"Plantilla {SRC_USERS_JSON} no encontrada")
+
+    # Copiar passwords.json (siempre)
+    if SRC_PASSWORDS_JSON.exists():
+        shutil.copy2(SRC_PASSWORDS_JSON, API_PASSWORDS_JSON)
+        print(f"Copiado {SRC_PASSWORDS_JSON} a {API_PASSWORDS_JSON}")
+    else:
+        print(f"Plantilla {SRC_PASSWORDS_JSON} no encontrada")
+
+# Ejecutar la copia al iniciar
+copiar_json_plantillas()
 
 app = FastAPI()
 
@@ -245,24 +281,24 @@ def generar_password_seguro(longitud: int, mayusculas: bool, minusculas: bool, d
 # Funciones para manejar los JSONs
 def leer_json_users():
     try:
-        with open('users.json', 'r') as f:
+        with open(API_USERS_JSON, 'r') as f:
             return json.load(f)
     except FileNotFoundError:
         return {"users": []}
 
 def guardar_json_users(datos):
-    with open('users.json', 'w') as f:
+    with open(API_USERS_JSON, 'w') as f:
         json.dump(datos, f, indent=2)
 
 def leer_json_passwords():
     try:
-        with open('passwords.json', 'r') as f:
+        with open(API_PASSWORDS_JSON, 'r') as f:
             return json.load(f)
     except FileNotFoundError:
         return {"passwords": []}
 
 def guardar_json_passwords(datos):
-    with open('passwords.json', 'w') as f:
+    with open(API_PASSWORDS_JSON, 'w') as f:
         json.dump(datos, f, indent=2)
 
 # Endpoints de Usuarios
