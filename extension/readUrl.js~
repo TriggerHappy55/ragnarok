@@ -33,8 +33,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 		}
 		mostrandoUrl = !mostrandoUrl;
 	})
-	casillaTexto.addEventListener("change", updateValue =>{
-		const texto = casillaTexto.value();
+	casillaTexto.addEventListener("input", () =>{
+		const texto = casillaTexto.value;
 		mensaje.textContent = `Introdujiste ${texto}`
 	})
 });
