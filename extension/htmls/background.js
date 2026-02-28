@@ -269,6 +269,60 @@ async function fetchAndShowAutofill(url, tabId) {
 }
 
 
+async function savePassword(data) {
+    try {
+        console.log('🔐 [BG] savePassword called with:', {
+            url: data?.url,
+            email: data?.email,
+            passwordLength: data?.password ? data.password.length : 0
+        });
+        
+        const result = await new Promise((resolve) => {
+            browser.storage.local.get(['authToken'], resolve);
+        });
+
+        if (result.authToken) {
+            const payload = {
+                url: data.url,
+                email: data.email,
+                password: data.password,
+                autologin: false,
+                comentario: 'Guardada automáticamente'
+            };
+            
+            console.log('🔐 [BG] Sending to API:', {
+                url: payload.url,
+                email: payload.email,
+                passwordLength: payload.password ? payload.password.length : 0
+            });
+            
+            const response = await fetch(
+                'https://ragnarok-uegm.onrender.com/passwords',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${result.authToken}`
+                    },
+                    body: JSON.stringify(payload)
+                }
+            );
+            
+            if (response.ok) {
+                console.log('🔐 [BG] Password saved successfully to API');
+            } else {
+                console.error('🔐 [BG] Error saving password to API:', response.statusText);
+                const errorBody = await response.text();
+                console.error('🔐 [BG] Error body:', errorBody);
+            }
+        } else {
+            console.error('🔐 [BG] No auth token found');
+        }
+    } catch (error) {
+        console.error('🔐 [BG] Error saving password:', error);
+    }
+}
+
 
 
 // Función para prueba manual desde console del background
