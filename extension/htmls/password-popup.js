@@ -19,11 +19,15 @@ let autofillData = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
+        // Pequeño delay para asegurar que el background haya seteado el modo
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
         const response = await browser.runtime.sendMessage({
             action: 'getPopupMode'
         });
         
         console.log('Popup mode:', response.mode);
+        console.log('Popup data:', response.data);
         
         if (response.mode === 'save') {
             mode = 'save';
@@ -31,6 +35,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else if (response.mode === 'autofill') {
             mode = 'autofill';
             showAutofillMode(response.data);
+        } else {
+            console.error('No mode received, popup will be empty');
         }
     } catch (error) {
         console.error('Error getting popup mode:', error);

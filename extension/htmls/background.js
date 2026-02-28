@@ -2,8 +2,6 @@ console.log('Background script loaded');
 
 let pendingPassword = null;
 let pendingAutofill = null;
-let popupMode = null;
-let popupData = null;
 let autofillTabId = null;
 let cachedPasswords = null;
 
@@ -29,11 +27,14 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
             passwordLength: pendingPassword.password ? pendingPassword.password.length : 0
         });
         
-        // Abrir popup con openOptionsPage
-        popupMode = 'save';
-        popupData = pendingPassword;
-        browser.runtime.openOptionsPage().catch((error) => {
-            console.error('Error opening options page:', error);
+        // Guardar en storage local para persistencia
+        browser.storage.local.set({
+            popupMode: 'save',
+            popupData: pendingPassword
+        }).then(() => {
+            browser.runtime.openOptionsPage().catch((error) => {
+                console.error('Error opening options page:', error);
+            });
         });
         sendResponse({ received: true });
         
@@ -54,8 +55,11 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendResponse({ received: true });
         
     } else if (request.action === 'getPopupMode') {
-        console.log('Getting popup mode:', popupMode);
-        sendResponse({ mode: popupMode, data: popupData || (popupMode === 'save' ? pendingPassword : pendingAutofill) });
+        console.log('Getting popup mode');
+        browser.storage.local.get(['popupMode', 'popupData'], (result) => {
+            console.log('Popup mode from storage:', result.popupMode);
+            sendResponse({ mode: result.popupMode, data: result.popupData });
+        });
         
     } else if (request.action === 'getPasswordData') {
         console.log('Sending password data:', {
@@ -91,11 +95,14 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendResponse({ success: true });
         
     } else if (request.action === 'passwordSaved') {
-        console.log('Password saved, clearing pendingPassword');
+        console.log('Password saved, clearing data');
         pendingPassword = null;
-        popupMode = null;
-        popupData = null;
-        cachedPasswords = null; // Limpiar caché
+        pendingAutofill = null;
+        cachedPasswords = null;
+        browser.storage.local.set({
+            popupMode: null,
+            popupData: null
+        });
         sendResponse({ success: true });
     }
 });
@@ -222,12 +229,15 @@ async function fetchAndShowAutofill(url, tabId) {
                 password: matchedPassword.password
             };
 
-            // Abrir popup con openOptionsPage
-            popupMode = 'autofill';
-            popupData = pendingAutofill;
-            console.log('Opening options page for autofill');
-            browser.runtime.openOptionsPage().catch((error) => {
-                console.error('Error opening options page:', error);
+            // Guardar en storage local y abrir popup
+            browser.storage.local.set({
+                popupMode: 'autofill',
+                popupData: pendingAutofill
+            }).then(() => {
+                console.log('Opening options page for autofill');
+                browser.runtime.openOptionsPage().catch((error) => {
+                    console.error('Error opening options page:', error);
+                });
             });
         } else {
             console.log('No matching password found for:', url);
