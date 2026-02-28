@@ -10,7 +10,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log('Message received:', request.action);
     
     if (request.action === 'checkPassword') {
-        console.log('Processing checkPassword', {
+        console.log('🔐 [BG] Processing checkPassword', {
             email: request.email,
             url: request.url,
             passwordLength: request.password ? request.password.length : 0
@@ -21,7 +21,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
             password: request.password
         };
         
-        console.log('Pending password stored:', {
+        console.log('🔐 [BG] Pending password stored:', {
             url: pendingPassword.url,
             email: pendingPassword.email,
             passwordLength: pendingPassword.password ? pendingPassword.password.length : 0
@@ -32,9 +32,12 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
             popupMode: 'save',
             popupData: pendingPassword
         }).then(() => {
+            console.log('🔐 [BG] Storage saved, opening options page...');
             browser.runtime.openOptionsPage().catch((error) => {
-                console.error('Error opening options page:', error);
+                console.error('🔐 [BG] Error opening options page:', error);
             });
+        }).catch(err => {
+            console.error('🔐 [BG] Error saving to storage:', err);
         });
         sendResponse({ received: true });
         
@@ -55,11 +58,14 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendResponse({ received: true });
         
     } else if (request.action === 'getPopupMode') {
-        console.log('Getting popup mode');
+        console.log('🔐 [BG] Getting popup mode request');
         browser.storage.local.get(['popupMode', 'popupData'], (result) => {
-            console.log('Popup mode from storage:', result.popupMode);
+            console.log('🔐 [BG] Storage retrieved:', result);
+            console.log('🔐 [BG] Popup mode from storage:', result.popupMode);
+            console.log('🔐 [BG] Popup data from storage:', result.popupData);
             sendResponse({ mode: result.popupMode, data: result.popupData });
         });
+        return true; // Indica que la respuesta será asíncrona
         
     } else if (request.action === 'getPasswordData') {
         console.log('Sending password data:', {

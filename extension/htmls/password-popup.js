@@ -18,28 +18,34 @@ let passwordData = null;
 let autofillData = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
+    console.log('🔐 Popup DOMContentLoaded fired');
     try {
         // Pequeño delay para asegurar que el background haya seteado el modo
         await new Promise(resolve => setTimeout(resolve, 100));
         
+        console.log('🔐 Requesting popup mode from background...');
         const response = await browser.runtime.sendMessage({
             action: 'getPopupMode'
         });
         
-        console.log('Popup mode:', response.mode);
-        console.log('Popup data:', response.data);
+        console.log('🔐 Popup mode response:', response);
+        console.log('🔐 Mode:', response.mode);
+        console.log('🔐 Data:', response.data);
         
         if (response.mode === 'save') {
+            console.log('🔐 Showing save mode');
             mode = 'save';
             showSaveMode(response.data);
         } else if (response.mode === 'autofill') {
+            console.log('🔐 Showing autofill mode');
             mode = 'autofill';
             showAutofillMode(response.data);
         } else {
-            console.error('No mode received, popup will be empty');
+            console.error('🔐 No mode received, popup will be empty. Mode:', response.mode);
+            console.log('🔐 All storage:', response);
         }
     } catch (error) {
-        console.error('Error getting popup mode:', error);
+        console.error('🔐 Error getting popup mode:', error);
     }
 });
 

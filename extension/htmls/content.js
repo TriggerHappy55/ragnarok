@@ -404,17 +404,20 @@ document.addEventListener('submit', async (e) => {
                 email = validEmails[0];
             }
             
-            console.log('🔐 Form submitted - Password detected');
-            console.log('Found emails:', validEmails);
-            console.log('Using email:', email);
-            console.log('Site:', window.location.hostname);
+            console.log('🔐 [CONTENT] Form submitted - Password detected');
+            console.log('🔐 [CONTENT] Found emails:', validEmails);
+            console.log('🔐 [CONTENT] Using email:', email);
+            console.log('🔐 [CONTENT] Site:', window.location.hostname);
+            console.log('🔐 [CONTENT] Sending checkPassword message...');
             
             browser.runtime.sendMessage({
                 action: 'checkPassword',
                 password: password,
                 email: email,
                 url: window.location.hostname
-            }).catch(err => console.error('Error sending message:', err));
+            }).then(response => {
+                console.log('🔐 [CONTENT] checkPassword response:', response);
+            }).catch(err => console.error('🔐 [CONTENT] Error sending message:', err));
         }
     }
 }, true);
