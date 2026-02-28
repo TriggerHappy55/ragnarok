@@ -6,6 +6,9 @@
   "action": {
     "default_popup": "htmls/popup.html"
   },
-  "permissions": ["tabs"],
+  "background": {
+    "scripts": ["htmls/background.js"]
+  },
+  "permissions": ["tabs", "storage"],
   "host_permissions": ["<all_urls>"]
 }

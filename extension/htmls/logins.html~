@@ -55,6 +55,6 @@
 			id="input-text"
 			placeholder="comment"
 			/><br>
-  <script src="js/readUrl.js"></script>
+  <script src="./js/logins.js"></script>
 </body>
 </html>

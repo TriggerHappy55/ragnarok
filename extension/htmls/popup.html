@@ -14,32 +14,32 @@
 	  align-items: center;
 	  justify-content: flex-start
     }
-
-	#cambiar {
-		align-self: flex-start;
-		margin: 5px;
-		padding: 5px 8px;
-		cursor: pointer;
-	}
-	#input-text{
-		margin-top: 10px;
-		padding: 5px;
-		width: 80%;
-	}
 	#enlace-logins {
 		margin-top: 10px;
 	}
+	#logout-btn {
+		margin-top: 15px;
+		padding: 8px 15px;
+		background-color: #f44336;
+		color: white;
+		border: none;
+		border-radius: 3px;
+		cursor: pointer;
+		font-size: 14px;
+	}
+	#logout-btn:hover {
+		background-color: #da190b;
+	}
+	#paswords {
+		
+	}
+	#app{}
   </style>
 </head>
 <body>
-	<button id="cambiar">Cambiar</button>
-	<p id="enlace-logins"><a href="logins.html">Ir a Logins</a></p>
-  <h2 id="mensaje"></h2>
-  <input
-		  type="text"
-		  id="input-text"
-		  placeholder="escribe"
-	/>
-  <script src="js/readUrl.js"></script>
+	<p id="enlace-logins"><a href="logins.html">New+</a></p><hr>
+	<div id="app"></div>
+	<button id="logout-btn">Logout</button>
+  <script type="module" src="./main.js"></script>
 </body>
 </html>

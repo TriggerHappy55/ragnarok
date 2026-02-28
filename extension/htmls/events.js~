@@ -1,0 +1,11 @@
+import { cargarDatosId } from "./data.js";
+
+export function agregarEventoClick(elemento, objeto) {
+    elemento.addEventListener("click", () => {
+		sessionStorage.setItem("myData", objeto.id);
+        window.location.href = "./logins.html";
+		const data = cargarDatosId(sessionStorage.getItem("myData"));
+		const User = document.getItemById("input-user");
+		User.value = data.user;
+    });
+}
