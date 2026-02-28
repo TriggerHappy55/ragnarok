@@ -1,0 +1,71 @@
+console.log('Background script loaded');
+
+// Escuchar mensajes desde content scripts
+browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    console.log('Message received:', request.action);
+    
+    if (request.action === 'savePassword') {
+        checkAndSavePassword(request, sender);
+    }
+    
+    sendResponse({ received: true });
+});
+
+async function checkAndSavePassword(data, sender) {
+    try {
+        // Obtener token
+        const result = await new Promise((resolve) => {
+            browser.storage.local.get(['authToken'], resolve);
+        });
+
+        if (!result.authToken) {
+            console.log('No auth token');
+            return;
+        }
+
+        // Checkear si la contraseña ha sido vulnerada
+        const response = await fetch('https://ragnarok-uegm.onrender.com/passwords', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${result.authToken}`
+            },
+            body: JSON.stringify({
+                url: data.url,
+                email: data.email,
+                password: data.password,
+                autologin: false,
+                comentario: ''
+            })
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+            
+            // Mostrar popup con datos de vulneración
+            const tab = await browser.tabs.getCurrent();
+            browser.windows.create({
+                url: browser.runtime.getURL('htmls/save-password-popup.html'),
+                type: 'detached-panel',
+                width: 350,
+                height: 300
+            });
+            
+            // Enviar datos al popup
+            setTimeout(() => {
+                browser.runtime.sendMessage({
+                    action: 'showSavePopup',
+                    data: {
+                        ...data,
+                        password_vulnerada: responseData.password_vulnerada || false
+                    }
+                }).catch(() => {
+                    console.log('Popup closed or not ready');
+                });
+            }, 500);
+        }
+    } catch (error) {
+        console.error('Error checking password:', error);
+    }
+}
+

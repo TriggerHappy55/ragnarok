@@ -9,6 +9,12 @@
   "background": {
     "scripts": ["htmls/background.js"]
   },
-  "permissions": ["tabs", "storage"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["htmls/content.js"]
+    }
+  ],
+  "permissions": ["tabs", "storage", "notifications"],
   "host_permissions": ["<all_urls>"]
 }
