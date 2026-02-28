@@ -41,8 +41,8 @@ def cargar_contrasenas_vulneradas():
     archivos_txt = glob.glob('rockyou/*.txt')
     
     if not archivos_txt:
-        print("ADVERTENCIA: No se encontraron archivos .txt en la carpeta rockyou")
-        print("Asegúrate de que la carpeta 'rockyou' existe y contiene archivos .txt")
+        print("❌ ADVERTENCIA: No se encontraron archivos .txt en la carpeta rockyou")
+        print("   Asegúrate de que la carpeta 'rockyou' existe y contiene archivos .txt")
         return
     
     total_cargadas = 0
@@ -57,7 +57,7 @@ def cargar_contrasenas_vulneradas():
                 if password:  # Ignorar líneas vacías
                     contrasenas_vulneradas.add(password)
             
-            print(f"Cargadas {len(contrasenas_vulneradas) - total_cargadas} contraseñas desde {archivo}")
+            print(f"✅ Cargadas {len(contrasenas_vulneradas) - total_cargadas} contraseñas desde {archivo}")
             total_cargadas = len(contrasenas_vulneradas)
             
         except UnicodeDecodeError:
@@ -71,23 +71,23 @@ def cargar_contrasenas_vulneradas():
                     if password:
                         contrasenas_vulneradas.add(password)
                 
-                print(f"Cargadas {len(contrasenas_vulneradas) - total_cargadas} contraseñas desde {archivo} (latin-1)")
+                print(f"✅ Cargadas {len(contrasenas_vulneradas) - total_cargadas} contraseñas desde {archivo} (latin-1)")
                 total_cargadas = len(contrasenas_vulneradas)
                 
             except Exception as e:
-                print(f"Error al cargar {archivo}: {e}")
+                print(f"❌ Error al cargar {archivo}: {e}")
         except Exception as e:
-            print(f"Error al procesar {archivo}: {e}")
+            print(f"❌ Error al procesar {archivo}: {e}")
     
-    print(f"\nTOTAL: {len(contrasenas_vulneradas)} contraseñas vulneradas cargadas en memoria")
+    print(f"\n📊 TOTAL: {len(contrasenas_vulneradas)} contraseñas vulneradas cargadas en memoria")
     
     # Mostrar algunas contraseñas de ejemplo para verificar
     if len(contrasenas_vulneradas) > 0:
         ejemplos = sorted(list(contrasenas_vulneradas))[:10]
-        print(f"Ejemplos de las primeras 10: {ejemplos}")
+        print(f"📝 Ejemplos de las primeras 10: {ejemplos}")
 
 # Cargar las contraseñas al iniciar
-print("Cargando contraseñas vulneradas...")
+print("🔄 Cargando contraseñas vulneradas...")
 cargar_contrasenas_vulneradas()
 
 # Modelos de datos
@@ -305,7 +305,7 @@ def registrar_usuario(user: User, response: Response):
     # Si la contraseña está vulnerada, añadir advertencia
     if password_vulnerada:
         if isinstance(resultado_login, dict):
-            resultado_login["advertencia"] = "La contraseña que has utilizado está en la lista de contraseñas vulneradas. Por seguridad, te recomendamos cambiarla inmediatamente."
+            resultado_login["advertencia"] = "⚠️ La contraseña que has utilizado está en la lista de contraseñas vulneradas. Por seguridad, te recomendamos cambiarla inmediatamente."
     
     return resultado_login
 
@@ -359,7 +359,7 @@ def login(login_data: LoginData, response: Response):
                 
                 # Añadir advertencia si la contraseña está vulnerada
                 if password_vulnerada:
-                    resultado["advertencia"] = "Tu contraseña está en la lista de contraseñas vulneradas. Por seguridad, te recomendamos cambiarla inmediatamente."
+                    resultado["advertencia"] = "⚠️ Tu contraseña está en la lista de contraseñas vulneradas. Por seguridad, te recomendamos cambiarla inmediatamente."
                 
                 return resultado
     
@@ -483,7 +483,7 @@ def cambiar_password(email: str, password_change: PasswordChange, session_token:
             }
             
             if password_vulnerada:
-                resultado["advertencia"] = "La nueva contraseña está en la lista de contraseñas vulneradas. Por seguridad, elige una contraseña más segura."
+                resultado["advertencia"] = "⚠️ La nueva contraseña está en la lista de contraseñas vulneradas. Por seguridad, elige una contraseña más segura."
             
             return resultado
     
@@ -579,7 +579,7 @@ def crear_password(password: Password, session_token: Optional[str] = Cookie(Non
     
     # Añadir advertencia si la contraseña está vulnerada
     if password_vulnerada:
-        respuesta["advertencia"] = "Esta contraseña está en la lista de contraseñas vulneradas. Te recomendamos usar una contraseña más segura."
+        respuesta["advertencia"] = "⚠️ Esta contraseña está en la lista de contraseñas vulneradas. Te recomendamos usar una contraseña más segura."
     
     return respuesta
 
@@ -619,7 +619,7 @@ def actualizar_password(id: int, password_update: PasswordUpdate, session_token:
             }
             
             if password_vulnerada:
-                resultado["advertencia"] = "La nueva contraseña está en la lista de contraseñas vulneradas. Te recomendamos usar una contraseña más segura."
+                resultado["advertencia"] = "⚠️ La nueva contraseña está en la lista de contraseñas vulneradas. Te recomendamos usar una contraseña más segura."
             
             return resultado
     
@@ -778,7 +778,7 @@ def generar_password(request: PasswordGeneratorRequest):
         }
         
         if password_vulnerada:
-            resultado["advertencia"] = "La contraseña generada está en la lista de vulneradas (esto es extremadamente raro). Por favor, genera otra."
+            resultado["advertencia"] = "⚠️ La contraseña generada está en la lista de vulneradas (esto es extremadamente raro). Por favor, genera otra."
         
         return resultado
         
@@ -848,7 +848,7 @@ def check_password_strength(password: str):
     
     # Generar recomendaciones personalizadas
     if password_vulnerada:
-        resultado["recomendacion"].append("Esta contraseña está en la lista de contraseñas vulneradas. ¡NO LA USES!")
+        resultado["recomendacion"].append("⚠️ Esta contraseña está en la lista de contraseñas vulneradas. ¡NO LA USES!")
     
     if entropia < 50:
         resultado["recomendacion"].append("Usa mayúsculas, minúsculas, números y símbolos para mayor seguridad")
