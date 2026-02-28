@@ -13,6 +13,18 @@ const autofillEmailDisplay = document.getElementById('autofillEmailDisplay');
 const autofillCancelBtn = document.getElementById('autofillCancelBtn');
 const autofillConfirmBtn = document.getElementById('autofillConfirmBtn');
 
+console.log('🔐 DOM elements found:', {
+    saveModeContainer: !!saveModeContainer,
+    autofillModeContainer: !!autofillModeContainer,
+    siteUrlSpan: !!siteUrlSpan,
+    emailText: !!emailText,
+    saveCancelBtn: !!saveCancelBtn,
+    saveSaveBtn: !!saveSaveBtn,
+    autofillEmailDisplay: !!autofillEmailDisplay,
+    autofillCancelBtn: !!autofillCancelBtn,
+    autofillConfirmBtn: !!autofillConfirmBtn
+});
+
 let mode = null; // 'save' o 'autofill'
 let passwordData = null;
 let autofillData = null;
@@ -50,27 +62,47 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function showSaveMode(data) {
+    console.log('🔐 showSaveMode called with data:', data);
+    
+    if (!saveModeContainer) {
+        console.error('🔐 saveModeContainer not found!');
+        return;
+    }
+    
     saveModeContainer.style.display = 'block';
     autofillModeContainer.style.display = 'none';
     
     passwordData = data;
     if (data) {
+        console.log('🔐 Setting form values:', { url: data.url, email: data.email });
         siteUrlSpan.textContent = data.url || 'Desconocido';
         emailText.textContent = data.email || 'No proporcionado';
         
         if (data.password_vulnerada) {
             breachWarning.style.display = 'block';
         }
+    } else {
+        console.warn('🔐 showSaveMode called with no data');
     }
 }
 
 function showAutofillMode(data) {
+    console.log('🔐 showAutofillMode called with data:', data);
+    
+    if (!autofillModeContainer) {
+        console.error('🔐 autofillModeContainer not found!');
+        return;
+    }
+    
     saveModeContainer.style.display = 'none';
     autofillModeContainer.style.display = 'block';
     
     autofillData = data;
     if (data) {
+        console.log('🔐 Setting autofill email:', data.email);
         autofillEmailDisplay.textContent = data.email || 'No disponible';
+    } else {
+        console.warn('🔐 showAutofillMode called with no data');
     }
 }
 
