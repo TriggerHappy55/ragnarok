@@ -347,17 +347,17 @@ def actualizar_usuario(userid: int, user_update: UserUpdate, session_token: Opti
     
     raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
-@app.post("/users/{userid}/change-password")
-def cambiar_password(userid: int, password_change: PasswordChange, session_token: Optional[str] = Cookie(None)):
+@app.post("/users/{email}/change-password")
+def cambiar_password(email: str, password_change: PasswordChange, session_token: Optional[str] = Cookie(None)):
     """Cambiar la contraseña del usuario"""
     sesion = verificar_sesion(session_token)
-    if sesion["uid"] != userid:
+    if sesion["email"] != email:
         raise HTTPException(status_code=403, detail="No tienes permiso para cambiar esta contraseña")
     
     datos_users = leer_json_users()
     
     for i, usuario in enumerate(datos_users["users"]):
-        if usuario["uid"] == userid:
+        if usuario["email"] == email:
             # Verificar contraseña actual usando el hash
             if not verificar_password(password_change.password_actual, usuario["salt"], usuario["password_hash"]):
                 raise HTTPException(status_code=401, detail="Contraseña actual incorrecta")
@@ -379,7 +379,7 @@ def cambiar_password(userid: int, password_change: PasswordChange, session_token
             
             return {
                 "mensaje": "Contraseña cambiada correctamente",
-                "uid": userid,
+                "email": email,
                 "nota": "Las contraseñas guardadas anteriormente ya no son accesibles con la nueva contraseña"
             }
     

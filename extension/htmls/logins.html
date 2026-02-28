@@ -1,75 +1,115 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="UTF-8">
 	<style>
 		body {
 		  font-family: Arial, sans-serif;
-		  width: 200px;
+		  width: 250px;
 		  text-align: center;
 		  padding: 20px;
-
 		  display: flex;
 		  flex-direction: column;
 		  align-items: center;
 		  justify-content: flex-start
 		}
-		#enlace-main{}
-
-		#input-user{
-		margin-top: 10px;
-		padding: 5px;
-		width: 80%;
-	}
-		#input-pass{
-		margin-top: 10px;
-		padding: 5px;
-		width: 80%;
-	}
-		#input-website{
-		margin-top: 10px;
-		padding: 5px;
-		width: 80%;
-	}
+		.container {
+			border: 1px solid #ddd;
+			padding: 20px;
+			border-radius: 5px;
+			width: 100%;
+		}
+		.field {
+			margin: 15px 0;
+			text-align: left;
+		}
+		label {
+			font-weight: bold;
+			display: block;
+			margin-bottom: 5px;
+		}
+		input[type="text"] {
+			width: 100%;
+			padding: 8px;
+			border: 1px solid #ccc;
+			border-radius: 3px;
+			box-sizing: border-box;
+		}
+		.checkbox-field {
+			margin: 10px 0;
+		}
+		.buttons {
+			margin-top: 20px;
+			display: flex;
+			gap: 10px;
+		}
+		button {
+			flex: 1;
+			padding: 10px;
+			border: none;
+			border-radius: 3px;
+			cursor: pointer;
+			font-size: 14px;
+		}
+		.back-btn {
+			background-color: #757575;
+			color: white;
+		}
+		.back-btn:hover {
+			background-color: #616161;
+		}
+		.save-btn {
+			background-color: #4CAF50;
+			color: white;
+		}
+		.save-btn:hover {
+			background-color: #45a049;
+		}
 		#password-strength {
-		margin-top: 10px;
-		padding: 8px;
-		border-radius: 3px;
-		display: none;
-		width: 90%;
-		text-align: center;
-		font-weight: bold;
-	}
-
+			margin-top: 10px;
+			padding: 8px;
+			border-radius: 3px;
+			display: none;
+			width: 100%;
+			text-align: center;
+			font-weight: bold;
+		}
 	</style>
-  <meta charset="UTF-8">
-  <title>Página 2</title>
 </head>
 <body>
-	<p id="enlace-main"><a href="popup.html">return</a></p><br>
-	<input
-			type="text"
-			id="input-website"
-			placeholder="website"
-			/><br>
-	<hr>
-	<input
-			type="text"
-			id="input-user"
-			placeholder="login"
-			/><br>
-	<input
-			type="text"
-			id="input-pass"
-			placeholder="password"
-	/>
-	<div id="password-strength"></div>
-	<hr>
+	<div class="container">
+		<h2>Crear Contraseña</h2>
+		
+		<div class="field">
+			<label for="input-website">URL:</label>
+			<input type="text" id="input-website" placeholder="URL" />
+		</div>
 
-	<input
-			type="text"
-			id="input-text"
-			placeholder="comment"
-			/><br>
-  <script type="module" src="./logins.js"></script>
+		<div class="field">
+			<label for="input-user">Email:</label>
+			<input type="text" id="input-user" placeholder="Email" />
+		</div>
+
+		<div class="field">
+			<label for="input-pass">Contraseña:</label>
+			<input type="text" id="input-pass" placeholder="Contraseña" />
+			<div id="password-strength"></div>
+		</div>
+
+		<div class="field checkbox-field">
+			<input type="checkbox" id="input-autologin" />
+			<label for="input-autologin" style="display: inline; font-weight: normal;">Auto-login</label>
+		</div>
+			<label for="input-text">Comentario:</label>
+			<input type="text" id="input-text" placeholder="Comentario" />
+		</div>
+
+		<div class="buttons">
+			<button class="back-btn" id="backBtn">← Volver</button>
+			<button class="save-btn" id="saveBtn">Guardar</button>
+		</div>
+	</div>
+
+	<script type="module" src="./logins.js"></script>
 </body>
 </html>

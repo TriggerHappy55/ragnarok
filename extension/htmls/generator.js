@@ -1,4 +1,9 @@
+const backBtn = document.getElementById('backBtn');
 const longitud = document.getElementById('longitud');
+
+backBtn.addEventListener('click', () => {
+    window.location.href = './popup.html';
+});
 const mayusculas = document.getElementById('mayusculas');
 const minusculas = document.getElementById('minusculas');
 const digitos = document.getElementById('digitos');

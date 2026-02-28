@@ -5,28 +5,8 @@ const inputEmail = document.getElementById('input-user');
 const inputPassword = document.getElementById('input-pass');
 const inputComentario = document.getElementById('input-text');
 const strengthDiv = document.getElementById('password-strength');
-
-// Check if logged in
-browser.storage.local.get(['authToken'], (result) => {
-    if (!result.authToken) {
-        window.location.href = './login.html';
-    }
-});
-
-// Agregar campo para autologin (esto sí lo creamos dinámicamente)
-const inputAutologin = document.createElement('input');
-inputAutologin.type = 'checkbox';
-inputAutologin.id = 'input-autologin';
-inputAutologin.style.marginTop = '10px';
-inputAutologin.style.width = 'auto';
-const labelAutologin = document.createElement('label');
-labelAutologin.htmlFor = 'input-autologin';
-labelAutologin.textContent = ' Auto-login';
-labelAutologin.style.marginLeft = '5px';
-const autologinContainer = document.createElement('div');
-autologinContainer.appendChild(inputAutologin);
-autologinContainer.appendChild(labelAutologin);
-strengthDiv.parentNode.insertBefore(autologinContainer, strengthDiv.nextSibling);
+const saveBtn = document.getElementById('saveBtn');
+const inputAutologin = document.getElementById('input-autologin');
 
 // Cargar dato seleccionado si existe (desde API)
 async function cargarDatoSeleccionado() {
@@ -150,12 +130,19 @@ async function guardar() {
     
     try {
         await guardarDato(nuevoPassword);
-        alert('Guardado correctamente');
         window.location.href = './popup.html';
     } catch (error) {
-        alert('Error al guardar: ' + error.message);
+        console.error('Error al guardar:', error);
     }
 }
+
+// Agregar evento al botón guardar
+saveBtn.addEventListener('click', guardar);
+
+// Agregar evento al botón volver
+backBtn.addEventListener('click', () => {
+    window.location.href = './popup.html';
+});
 
 // Agregar evento para guardar con Enter
 inputComentario.addEventListener('keypress', (e) => {
