@@ -6,5 +6,6 @@
   "action": {
     "default_popup": "htmls/popup.html"
   },
-  "permissions": ["tabs"]
+  "permissions": ["tabs"],
+  "host_permissions": ["<all_urls>"]
 }

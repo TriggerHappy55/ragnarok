@@ -1,0 +1,10 @@
+export async function cargarDatos() {
+    const respuesta = await fetch("./datos.json");
+    return await respuesta.json();
+}
+
+export async function cargarDatosId(id){
+	const data = await cargarDatos();
+	const key = Object.keys(data.user).find(user => user.user[user].id === id)
+  return data.user[key]
+}

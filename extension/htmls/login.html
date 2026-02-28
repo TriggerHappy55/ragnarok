@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      width: 250px;
+      text-align: center;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .auth-container {
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 5px;
+      width: 100%;
+    }
+    h2 {
+      margin-top: 0;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .success {
+      color: green;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .toggle-mode {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    .toggle-mode a {
+      color: #4CAF50;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .toggle-mode a:hover {
+      text-decoration: underline;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <!-- Login Form -->
+    <div id="loginForm">
+      <h2>Login</h2>
+      <input type="email" id="loginEmail" placeholder="Email" />
+      <input type="password" id="loginPassword" placeholder="Password" />
+      <button id="loginBtn">Login</button>
+      <div id="loginError" class="error"></div>
+    </div>
+
+    <!-- Register Form -->
+    <div id="registerForm" class="hidden">
+      <h2>Register</h2>
+      <input type="text" id="registerName" placeholder="Full Name" />
+      <input type="email" id="registerEmail" placeholder="Email" />
+      <input type="password" id="registerPassword" placeholder="Password" />
+      <input type="password" id="registerPasswordConfirm" placeholder="Confirm Password" />
+      <button id="registerBtn">Register</button>
+      <div id="registerError" class="error"></div>
+      <div id="registerSuccess" class="success"></div>
+    </div>
+
+    <!-- Toggle Mode -->
+    <div class="toggle-mode">
+      <span id="toggleText">Don't have an account? <a id="toggleLink">Register</a></span>
+    </div>
+  </div>
+
+  <script type="module" src="./auth.js"></script>
+</body>
+</html>
+
