@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "uid": 1,
+      "email": "marcos@gmail.com",
+      "nombre": "Marcos",
+      "password_hash": "bd5f0d7a51c306c34efd9a54eb96c4499ddc87f171bfe6483cd1175d99162ea3",
+      "salt": "PhZ7yJhsM-P5baTfUp9-Rg=="
+    },
+    {
+      "uid": 2,
+      "email": "lucia@gmail.com",
+      "nombre": "Lucia",
+      "password_hash": "62b2e09ddbb8e27f9b10a92c2e6c3856a3f34a4b418a1c7399dc92770434c72c",
+      "salt": "1S1DCsFm2E6wpvVlX65tYA=="
+    }
+  ]
+}
