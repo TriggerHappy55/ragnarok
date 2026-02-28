@@ -107,71 +107,97 @@ function showAutofillMode(data) {
 }
 
 // Save mode handlers
-saveCancelBtn.addEventListener('click', () => {
-    window.close();
-});
+if (!saveCancelBtn) {
+    console.error('🔐 saveCancelBtn not found!');
+} else {
+    console.log('🔐 saveCancelBtn found, adding listener');
+    saveCancelBtn.addEventListener('click', () => {
+        console.log('🔐 Cancel button clicked');
+        window.close();
+    });
+}
 
-saveSaveBtn.addEventListener('click', async () => {
-    try {
-        if (!passwordData) {
-            console.error('No password data available');
-            return;
-        }
-
-        const email = passwordData.email || emailText.textContent;
-        const url = passwordData.url || siteUrlSpan.textContent;
-        
-        console.log('Saving password with data:', {
-            email: email,
-            url: url,
-            password: passwordData.password ? '***' : 'MISSING'
-        });
-
-        const response = await browser.runtime.sendMessage({
-            action: 'savePassword',
-            data: {
-                url: url,
-                email: email,
-                password: passwordData.password,
-                autologin: false,
-                comentario: 'Guardada automáticamente'
+if (!saveSaveBtn) {
+    console.error('🔐 saveSaveBtn not found!');
+} else {
+    console.log('🔐 saveSaveBtn found, adding listener');
+    saveSaveBtn.addEventListener('click', async () => {
+        console.log('🔐 Save button clicked');
+        try {
+            if (!passwordData) {
+                console.error('🔐 No password data available');
+                return;
             }
-        });
 
-        console.log('Save response:', response);
-
-        if (response.success) {
-            console.log('Password saved successfully');
-            await browser.runtime.sendMessage({
-                action: 'passwordSaved'
+            const email = passwordData.email || emailText.textContent;
+            const url = passwordData.url || siteUrlSpan.textContent;
+            
+            console.log('🔐 Saving password with data:', {
+                email: email,
+                url: url,
+                passwordLength: passwordData.password ? passwordData.password.length : 0
             });
-            window.close();
+
+            const response = await browser.runtime.sendMessage({
+                action: 'savePassword',
+                data: {
+                    url: url,
+                    email: email,
+                    password: passwordData.password,
+                    autologin: false,
+                    comentario: 'Guardada automáticamente'
+                }
+            });
+
+            console.log('🔐 Save response:', response);
+
+            if (response.success) {
+                console.log('🔐 Password saved successfully, sending passwordSaved message');
+                await browser.runtime.sendMessage({
+                    action: 'passwordSaved'
+                });
+                console.log('🔐 Closing popup');
+                window.close();
+            }
+        } catch (error) {
+            console.error('🔐 Error saving password:', error);
         }
-    } catch (error) {
-        console.error('Error saving password:', error);
-    }
-});
+    });
+}
 
 // Autofill mode handlers
-autofillCancelBtn.addEventListener('click', () => {
-    window.close();
-});
-
-autofillConfirmBtn.addEventListener('click', async () => {
-    try {
-        if (!autofillData) {
-            console.error('No autofill data available');
-            return;
-        }
-
-        console.log('Sending autofill confirmation');
-        await browser.runtime.sendMessage({
-            action: 'autofillConfirmed',
-            data: autofillData
-        });
-        
+if (!autofillCancelBtn) {
+    console.error('🔐 autofillCancelBtn not found!');
+} else {
+    console.log('🔐 autofillCancelBtn found, adding listener');
+    autofillCancelBtn.addEventListener('click', () => {
+        console.log('🔐 Autofill cancel clicked');
         window.close();
-    } catch (error) {
-        console.error('Error confirming autofill:', error);
-    }
-});
+    });
+}
+
+if (!autofillConfirmBtn) {
+    console.error('🔐 autofillConfirmBtn not found!');
+} else {
+    console.log('🔐 autofillConfirmBtn found, adding listener');
+    autofillConfirmBtn.addEventListener('click', async () => {
+        console.log('🔐 Autofill confirm clicked');
+        try {
+            if (!autofillData) {
+                console.error('🔐 No autofill data available');
+                return;
+            }
+
+            console.log('🔐 Sending autofill confirmation');
+            await browser.runtime.sendMessage({
+                action: 'autofillConfirmed',
+                data: autofillData
+            });
+            
+            console.log('🔐 Closing popup');
+            window.close();
+        } catch (error) {
+            console.error('🔐 Error confirming autofill:', error);
+        }
+    });
+}
