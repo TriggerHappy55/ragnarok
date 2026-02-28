@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	const url = tabs[0].url;
 
-	casillaWeb.textContent = new URL(url).hostname;
+
 
 	// Extraer el dominio (ej: amazon.com)
 	const dominio = new URL(url).hostname;
