@@ -1,6 +1,8 @@
 const viewUrl = document.getElementById('view-url');
 const viewEmail = document.getElementById('view-email');
 const viewPassword = document.getElementById('view-password');
+const passwordText = document.getElementById('password-text');
+const togglePasswordBtn = document.getElementById('togglePasswordBtn');
 const viewComentario = document.getElementById('view-comentario');
 const viewAutologin = document.getElementById('view-autologin');
 const deleteBtn = document.getElementById('deleteBtn');
@@ -18,10 +20,24 @@ const confirmNewPassword = document.getElementById('confirmNewPassword');
 
 let currentPasswordId = null;
 let currentEmail = null;
+let currentPasswordValue = null;
+let passwordVisible = false;
 
 // Back button
 backBtn.addEventListener('click', () => {
     window.location.href = './popup.html';
+});
+
+// Toggle password visibility
+togglePasswordBtn.addEventListener('click', () => {
+    passwordVisible = !passwordVisible;
+    if (passwordVisible) {
+        passwordText.textContent = currentPasswordValue || '-';
+        togglePasswordBtn.textContent = '👁️‍🗨️';
+    } else {
+        passwordText.textContent = '•'.repeat((currentPasswordValue || '-').length);
+        togglePasswordBtn.textContent = '👁️';
+    }
 });
 
 // Check if logged in
@@ -59,7 +75,9 @@ async function cargarDetalles() {
             viewUrl.textContent = password.url || '-';
             viewEmail.textContent = password.email || '-';
             currentEmail = password.email;
-            viewPassword.textContent = password.password || '-';
+            currentPasswordValue = password.password || '-';
+            // Show password as dots initially
+            passwordText.textContent = '•'.repeat(currentPasswordValue.length);
             viewComentario.textContent = password.comentario || '-';
             viewAutologin.checked = password.autologin || false;
         } else {
